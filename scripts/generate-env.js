@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // scripts/generate-env.js
-// Generates src/environments/environment.prod.ts from Railway environment variables.
+// Generates src/environments/environment.ts and environment.prod.ts from Railway environment variables.
 // Run automatically as part of `npm run build` via the `prebuild` script.
 
 const fs = require('fs');
@@ -40,3 +40,22 @@ const outPath = path.join(__dirname, '..', 'src', 'environments', 'environment.p
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, content);
 console.log('Generated src/environments/environment.prod.ts from environment variables.');
+
+// Also write environment.ts — Angular's compiler resolves this import path at build time
+// even in production mode (before fileReplacements swaps it). Without it the build fails.
+const devContent = `// AUTO-GENERATED at build time by scripts/generate-env.js — do not edit manually
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: '${process.env.FIREBASE_API_KEY}',
+    authDomain: '${process.env.FIREBASE_AUTH_DOMAIN}',
+    projectId: '${process.env.FIREBASE_PROJECT_ID}',
+    storageBucket: '${process.env.FIREBASE_STORAGE_BUCKET}',
+    messagingSenderId: '${process.env.FIREBASE_MESSAGING_SENDER_ID}',
+    appId: '${process.env.FIREBASE_APP_ID}',
+  },
+};
+`;
+const devPath = path.join(__dirname, '..', 'src', 'environments', 'environment.ts');
+fs.writeFileSync(devPath, devContent);
+console.log('Generated src/environments/environment.ts from environment variables.');
