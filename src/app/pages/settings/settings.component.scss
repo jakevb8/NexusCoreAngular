@@ -1,0 +1,58 @@
+.page { padding: 1.5rem; max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
+
+.section {
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  h2 { margin: 0; font-size: 0.9rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+  .section-desc { margin: 0; font-size: 0.875rem; color: #64748b; }
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .info-label { font-size: 0.875rem; color: #64748b; }
+  .info-value { font-size: 0.875rem; color: #e2e8f0; }
+  .role-badge {
+    background: #1e1b4b; border: 1px solid #4338ca; color: #a5b4fc;
+    font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem;
+    border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+}
+
+.backend-options { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.backend-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #2d2d44;
+  background: #0f0f23;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  &.active { border-color: #6366f1; background: #1e1b4b; }
+  &:hover:not(.active) { border-color: #4b5563; }
+  .option-label { font-size: 0.875rem; font-weight: 600; color: #e2e8f0; }
+  .option-url { font-size: 0.75rem; color: #64748b; font-family: monospace; }
+}
+
+.btn-danger {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #991b1b;
+  background: #450a0a;
+  color: #fca5a5;
+  font-size: 0.875rem;
+  cursor: pointer;
+  &:hover { background: #7f1d1d; }
+}

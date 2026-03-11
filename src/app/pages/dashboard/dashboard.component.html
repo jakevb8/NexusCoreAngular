@@ -1,0 +1,18 @@
+<app-header title="Dashboard"></app-header>
+
+<div class="page">
+  <div class="welcome" *ngIf="appUser">
+    <p>Welcome back, <strong>{{ appUser.displayName || appUser.email }}</strong></p>
+    <span class="role-badge">{{ appUser.role }}</span>
+  </div>
+
+  <div class="nav-grid">
+    <a *ngFor="let card of navCards" [routerLink]="card.route" class="nav-card">
+      <span class="card-icon" [innerHTML]="card.icon"></span>
+      <div>
+        <h3>{{ card.title }}</h3>
+        <p>{{ card.description }}</p>
+      </div>
+    </a>
+  </div>
+</div>

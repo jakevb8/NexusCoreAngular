@@ -1,0 +1,86 @@
+<app-header title="Team" [showBack]="true" (onBack)="goBack()">
+  <button class="btn-primary btn-sm" *ngIf="isManager" (click)="openInvite()">+ Invite</button>
+</app-header>
+
+<div class="page">
+  <div *ngIf="error" class="alert-error">{{ error }}</div>
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div class="table-wrap" *ngIf="!loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th *ngIf="isManager">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of members">
+          <td>{{ member.displayName || '—' }}</td>
+          <td>{{ member.email }}</td>
+          <td>
+            <select
+              *ngIf="isManager && member.id !== currentUserId && member.role !== Role.SUPERADMIN"
+              [ngModel]="member.role"
+              (ngModelChange)="changeRole(member, $event)"
+              class="role-select"
+            >
+              <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+            </select>
+            <span *ngIf="!isManager || member.id === currentUserId || member.role === Role.SUPERADMIN">
+              {{ member.role }}
+            </span>
+          </td>
+          <td *ngIf="isManager">
+            <button
+              class="btn-link btn-danger"
+              *ngIf="member.id !== currentUserId && member.role !== Role.SUPERADMIN"
+              (click)="removeMember(member)"
+            >Remove</button>
+          </td>
+        </tr>
+        <tr *ngIf="members.length === 0">
+          <td [attr.colspan]="isManager ? 4 : 3" class="empty">No members found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Invite Modal -->
+<div class="modal-backdrop" *ngIf="showInviteModal" (click)="closeInvite()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Invite Team Member</h2>
+    <div *ngIf="inviteError" class="alert-error">{{ inviteError }}</div>
+
+    <div *ngIf="!inviteResult">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="inviteEmail" [disabled]="inviteLoading" placeholder="jane@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select [(ngModel)]="inviteRole" [disabled]="inviteLoading">
+          <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" (click)="closeInvite()" [disabled]="inviteLoading">Cancel</button>
+        <button class="btn-primary" (click)="sendInvite()" [disabled]="inviteLoading">
+          {{ inviteLoading ? 'Sending...' : 'Send Invite' }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="inviteResult" class="invite-success">
+      <p>Invite sent to <strong>{{ inviteEmail }}</strong></p>
+      <div *ngIf="inviteResult.inviteLink" class="invite-link-box">
+        <span class="invite-link">{{ inviteResult.inviteLink }}</span>
+        <button class="btn-secondary btn-sm" (click)="copyInviteLink()">Copy</button>
+      </div>
+      <button class="btn-primary" (click)="closeInvite()">Done</button>
+    </div>
+  </div>
+</div>

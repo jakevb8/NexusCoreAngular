@@ -1,0 +1,104 @@
+<app-header title="Assets">
+  <div class="header-actions" *ngIf="isManager">
+    <label class="btn-secondary btn-sm" title="Import CSV">
+      Import CSV
+      <input type="file" accept=".csv" (change)="onFileSelected($event)" style="display:none" />
+    </label>
+    <button class="btn-ghost btn-sm" (click)="downloadSampleCsv()">Sample CSV</button>
+    <button class="btn-primary btn-sm" (click)="openCreate()">+ New Asset</button>
+  </div>
+</app-header>
+
+<div class="page">
+  <div *ngIf="importResult" class="alert-success">
+    Imported {{ importResult.created }} asset(s).
+    <span *ngIf="importResult.skipped"> Skipped {{ importResult.skipped }}.</span>
+    <span *ngIf="importResult.limitReached"> Trial limit reached.</span>
+  </div>
+  <div *ngIf="importError" class="alert-error">{{ importError }}</div>
+  <div *ngIf="error" class="alert-error">{{ error }}</div>
+
+  <div class="toolbar">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search assets..."
+      [(ngModel)]="search"
+      (keyup.enter)="onSearch()"
+    />
+    <button class="btn-secondary btn-sm" (click)="onSearch()">Search</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div *ngIf="!loading" class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Status</th>
+          <th>Assigned To</th>
+          <th *ngIf="isManager">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let asset of assets">
+          <td>{{ asset.name }}</td>
+          <td class="mono">{{ asset.sku }}</td>
+          <td><app-status-chip [status]="asset.status"></app-status-chip></td>
+          <td>{{ asset.assignedTo || '—' }}</td>
+          <td *ngIf="isManager">
+            <button class="btn-link" (click)="openEdit(asset)">Edit</button>
+            <button class="btn-link btn-danger" (click)="deleteAsset(asset)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="assets.length === 0">
+          <td [attr.colspan]="isManager ? 5 : 4" class="empty">No assets found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="btn-ghost btn-sm" (click)="prevPage()" [disabled]="page <= 1">Prev</button>
+    <span>{{ page }} / {{ totalPages }}</span>
+    <button class="btn-ghost btn-sm" (click)="nextPage()" [disabled]="page >= totalPages">Next</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>{{ modalMode === 'create' ? 'New Asset' : 'Edit Asset' }}</h2>
+    <div *ngIf="formError" class="alert-error">{{ formError }}</div>
+    <div class="form-group">
+      <label>Name *</label>
+      <input type="text" [(ngModel)]="form.name" [disabled]="formLoading" />
+    </div>
+    <div class="form-group">
+      <label>SKU *</label>
+      <input type="text" [(ngModel)]="form.sku" [disabled]="formLoading" />
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" [(ngModel)]="form.description" [disabled]="formLoading" />
+    </div>
+    <div class="form-group">
+      <label>Status</label>
+      <select [(ngModel)]="form.status" [disabled]="formLoading">
+        <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Assigned To</label>
+      <input type="text" [(ngModel)]="form.assignedTo" [disabled]="formLoading" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" (click)="closeModal()" [disabled]="formLoading">Cancel</button>
+      <button class="btn-primary" (click)="saveAsset()" [disabled]="formLoading">
+        {{ formLoading ? 'Saving...' : 'Save' }}
+      </button>
+    </div>
+  </div>
+</div>

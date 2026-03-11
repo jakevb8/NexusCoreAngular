@@ -1,0 +1,50 @@
+.page {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.welcome {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  p { margin: 0; color: #94a3b8; strong { color: #e2e8f0; } }
+}
+
+.role-badge {
+  background: #1e1b4b;
+  border: 1px solid #4338ca;
+  color: #a5b4fc;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.nav-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: 12px;
+  padding: 1.25rem;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+  &:hover {
+    border-color: #6366f1;
+    background: #1e1b4b;
+  }
+  .card-icon { font-size: 1.75rem; }
+  h3 { margin: 0 0 0.2rem; color: #e2e8f0; font-size: 0.95rem; font-weight: 600; }
+  p { margin: 0; color: #64748b; font-size: 0.8rem; }
+}

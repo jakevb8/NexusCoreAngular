@@ -1,0 +1,36 @@
+<app-header title="Reports" [showBack]="true" (onBack)="goBack()"></app-header>
+
+<div class="page">
+  <div *ngIf="error" class="alert-error">{{ error }}</div>
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div *ngIf="!loading && data" class="reports-content">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">{{ data.totalAssets }}</div>
+        <div class="stat-label">Total Assets</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ utilizationPercent }}%</div>
+        <div class="stat-label">Utilization Rate</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Assets by Status</h3>
+      <div class="bar-chart">
+        <div *ngFor="let item of data.byStatus; let i = index" class="bar-row">
+          <div class="bar-label">{{ item.status }}</div>
+          <div class="bar-track">
+            <div
+              class="bar-fill"
+              [style.width.%]="data.totalAssets > 0 ? (item.count / data.totalAssets * 100) : 0"
+              [style.background]="chartColors[i]"
+            ></div>
+          </div>
+          <div class="bar-count">{{ item.count }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

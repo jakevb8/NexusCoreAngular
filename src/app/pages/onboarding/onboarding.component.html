@@ -1,0 +1,50 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="logo">
+      <h1>Set up your account</h1>
+      <p class="subtitle">Create your organization to get started</p>
+    </div>
+
+    <div *ngIf="error" class="error-msg">{{ error }}</div>
+
+    <div class="form-group">
+      <label>Your display name</label>
+      <input
+        type="text"
+        [(ngModel)]="displayName"
+        placeholder="Jane Smith"
+        [disabled]="loading"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Organization name</label>
+      <input
+        type="text"
+        [(ngModel)]="organizationName"
+        (input)="onOrgNameChange()"
+        placeholder="Acme Corp"
+        [disabled]="loading"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Organization slug</label>
+      <input
+        type="text"
+        [(ngModel)]="organizationSlug"
+        placeholder="acme-corp"
+        [disabled]="loading"
+      />
+      <span class="hint">Used in URLs — lowercase, hyphens only</span>
+    </div>
+
+    <button class="btn-primary" (click)="submit()" [disabled]="loading">
+      {{ loading ? 'Creating...' : 'Create Organization' }}
+    </button>
+
+    <button class="btn-ghost" (click)="signOut()" [disabled]="loading">
+      Sign out
+    </button>
+  </div>
+</div>

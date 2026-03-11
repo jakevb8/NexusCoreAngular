@@ -1,0 +1,104 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f0f23;
+  padding: 1rem;
+}
+
+.auth-card {
+  background: #1a1a2e;
+  border: 1px solid #2d2d44;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.logo {
+  text-align: center;
+  .logo-icon {
+    font-size: 2rem;
+    color: #6366f1;
+  }
+  h1 {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #e2e8f0;
+  }
+  .subtitle {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.875rem;
+  }
+}
+
+.backend-selector {
+  .selector-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .selector-chips {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+.chip {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #2d2d44;
+  background: #0f0f23;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  &.chip-active {
+    border-color: #6366f1;
+    background: #1e1b4b;
+    color: #a5b4fc;
+    font-weight: 600;
+  }
+  &:hover:not(.chip-active) {
+    border-color: #4b5563;
+    color: #e2e8f0;
+  }
+}
+
+.error-msg {
+  background: #450a0a;
+  border: 1px solid #991b1b;
+  color: #fca5a5;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #2d2d44;
+  background: #1e1e3a;
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:hover:not(:disabled) { background: #252545; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
