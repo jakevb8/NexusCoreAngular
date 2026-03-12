@@ -18,21 +18,7 @@ export enum OrgStatus {
   REJECTED = 'REJECTED',
 }
 
-export enum BackendChoice {
-  JS = 'JS',
-  DOTNET = 'DOTNET',
-}
-
-export const BACKEND_CONFIG: Record<BackendChoice, { label: string; baseUrl: string }> = {
-  [BackendChoice.JS]: {
-    label: 'NexusCoreJS (Node API)',
-    baseUrl: 'https://nexus-coreapi-production.up.railway.app/api/v1',
-  },
-  [BackendChoice.DOTNET]: {
-    label: 'NexusCoreDotNet (.NET API)',
-    baseUrl: 'https://nexuscoredotnet-production.up.railway.app/api/v1',
-  },
-};
+export const DOTNET_BASE_URL = 'https://nexuscoredotnet-production.up.railway.app/api/v1';
 
 export interface AuthUserOrg {
   id: string;
@@ -66,9 +52,6 @@ export interface PaginatedMeta {
   perPage?: number;
 }
 
-// Handles both backends:
-//   JS:   { data, meta: { total, page, perPage } }
-//   .NET: { data, total, page, perPage }
 export interface PaginatedAssets {
   data: Asset[];
   total?: number;
@@ -131,30 +114,11 @@ export interface DotNetReportsResponse {
   assetsByStatus: StatusBreakdownItem[];
 }
 
-export interface JsReportsResponse {
-  totalAssets: number;
-  utilizationRate: number;
-  byStatus: Record<string, number>;
-}
-
 export function dotNetToReportsData(r: DotNetReportsResponse): ReportsData {
   return {
     totalAssets: r.totalAssets,
     utilizationRate: r.utilizationRate,
     byStatus: r.assetsByStatus,
-  };
-}
-
-export function jsToReportsData(r: JsReportsResponse): ReportsData {
-  return {
-    totalAssets: r.totalAssets,
-    utilizationRate: r.utilizationRate,
-    byStatus: Object.entries(r.byStatus).reduce<StatusBreakdownItem[]>((acc, [key, count]) => {
-      if (key in AssetStatus) {
-        acc.push({ status: key as AssetStatus, count });
-      }
-      return acc;
-    }, []),
   };
 }
 

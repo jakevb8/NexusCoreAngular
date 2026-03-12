@@ -1,34 +1,31 @@
 # NexusCoreAngular
 
-Angular 21 web client for the [NexusCore](https://github.com/jakevb8/NexusCore) multi-tenant Resource Management SaaS. Frontend-only — connects to either the NestJS or ASP.NET Core backend via a user-selectable toggle.
+Angular 21 web client for the [NexusCore](https://github.com/jakevb8/NexusCore) multi-tenant Resource Management SaaS. Frontend-only — connects to the ASP.NET Core backend.
 
 ## Tech Stack
 
 - **Framework**: Angular 21, NgModules, SCSS
 - **Auth**: Firebase Authentication (Google sign-in only), `firebase` npm package (direct SDK — no `@angular/fire`)
 - **HTTP**: Axios with Firebase Bearer token interceptor
-- **Backend selector**: `localStorage`-backed toggle between JS and .NET APIs
+- **Backend**: NexusCoreDotNet (.NET API) — hardcoded, no toggle
 
 ## Features
 
-| Screen     | Features                                                                                          |
-| ---------- | ------------------------------------------------------------------------------------------------- |
-| Login      | Google sign-in (Firebase), backend selector chips (JS vs .NET), persists choice to `localStorage` |
-| Onboarding | Display name + org name form, POST /auth/register                                                 |
-| Pending    | Pending approval message, sign out                                                                |
-| Dashboard  | Navigation cards to Assets, Team, Reports, Events, Settings                                       |
-| Assets     | List with search + pagination, create/edit/delete modal (manager only), CSV import, sample CSV    |
-| Team       | Member list, invite by email modal, copy-link fallback, remove member, change role dropdown       |
-| Reports    | Total assets, utilization %, assets-by-status custom CSS bar chart                               |
-| Events     | Paginated Kafka asset status change history (asset name, old/new status, timestamp)               |
-| Settings   | Account info, backend picker (JS vs .NET), sign out                                               |
+| Screen     | Features                                                                                       |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| Login      | Google sign-in (Firebase)                                                                      |
+| Onboarding | Display name + org name form, POST /auth/register                                              |
+| Pending    | Pending approval message, sign out                                                             |
+| Dashboard  | Navigation cards to Assets, Team, Reports, Events, Settings                                    |
+| Assets     | List with search + pagination, create/edit/delete modal (manager only), CSV import, sample CSV |
+| Team       | Member list, invite by email modal, copy-link fallback, remove member, change role dropdown    |
+| Reports    | Total assets, utilization %, assets-by-status custom CSS bar chart                            |
+| Events     | Paginated Kafka asset status change history (asset name, old/new status, timestamp)            |
+| Settings   | Account info, sign out                                                                         |
 
-## API Backends
+## API Backend
 
-| Key      | Base URL                                                   | Label                      |
-| -------- | ---------------------------------------------------------- | -------------------------- |
-| `JS`     | `https://nexus-coreapi-production.up.railway.app/api/v1`   | NexusCoreJS (Node API)     |
-| `DOTNET` | `https://nexuscoredotnet-production.up.railway.app/api/v1` | NexusCoreDotNet (.NET API) |
+`https://nexuscoredotnet-production.up.railway.app/api/v1`
 
 ## Getting Started
 

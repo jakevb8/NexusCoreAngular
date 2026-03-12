@@ -13,11 +13,8 @@ import {
   InviteResponse,
   ReportsData,
   DotNetReportsResponse,
-  JsReportsResponse,
   dotNetToReportsData,
-  jsToReportsData,
   Role,
-  BackendChoice,
   PaginatedEvents,
 } from '../models';
 
@@ -127,14 +124,8 @@ export class ApiService {
 
   // Reports
   async getReports(): Promise<ReportsData> {
-    const choice = this.backendPref.get();
-    if (choice === BackendChoice.JS) {
-      const res = await this.getClient().get<JsReportsResponse>('/reports/stats');
-      return jsToReportsData(res.data);
-    } else {
-      const res = await this.getClient().get<DotNetReportsResponse>('/reports');
-      return dotNetToReportsData(res.data);
-    }
+    const res = await this.getClient().get<DotNetReportsResponse>('/reports');
+    return dotNetToReportsData(res.data);
   }
 
   // Events

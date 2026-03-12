@@ -76,17 +76,17 @@ NexusCoreAngular mirrors the **frontend/UI feature set** of all other NexusCore 
 
 **Canonical UI features (all must be implemented):**
 
-| Screen     | Features                                                                                          |
-| ---------- | ------------------------------------------------------------------------------------------------- |
-| Login      | Google sign-in (Firebase), backend selector chips (JS vs .NET), persists choice to `localStorage` |
-| Onboarding | Display name + org name form, POST /auth/register                                                 |
-| Pending    | Pending approval message, sign out                                                                |
-| Dashboard  | Navigation cards to Assets, Team, Reports, Events, Settings                                       |
-| Assets     | List with search + pagination, create/edit/delete modal (manager only), CSV import, sample CSV    |
-| Team       | Member list, invite by email modal, copy-link fallback, remove member, change role dropdown       |
-| Reports    | Total assets, utilization %, assets-by-status custom CSS bar chart                               |
-| Events     | Paginated Kafka asset status change history (asset name, old/new status, timestamp)               |
-| Settings   | Account info, backend picker (JS vs .NET), sign out                                               |
+| Screen     | Features                                                                                       |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| Login      | Google sign-in (Firebase)                                                                      |
+| Onboarding | Display name + org name form, POST /auth/register                                              |
+| Pending    | Pending approval message, sign out                                                             |
+| Dashboard  | Navigation cards to Assets, Team, Reports, Events, Settings                                    |
+| Assets     | List with search + pagination, create/edit/delete modal (manager only), CSV import, sample CSV |
+| Team       | Member list, invite by email modal, copy-link fallback, remove member, change role dropdown    |
+| Reports    | Total assets, utilization %, assets-by-status custom CSS bar chart                            |
+| Events     | Paginated Kafka asset status change history (asset name, old/new status, timestamp)            |
+| Settings   | Account info, sign out                                                                         |
 
 ## Project Structure
 
@@ -111,7 +111,7 @@ NexusCoreAngular/
 │       ├── services/
 │       │   ├── auth.service.ts          — Firebase Auth, AppAuthStatus observable
 │       │   ├── api.service.ts           — axios client, Bearer token, all API endpoints
-│       │   └── backend-preference.service.ts — localStorage-backed backend selector
+│       │   └── backend-preference.service.ts — returns hardcoded .NET base URL
 │       ├── guards/
 │       │   ├── auth.guard.ts            — redirects unauthenticated to /login
 │       │   └── guest.guard.ts           — redirects authenticated away from /login
@@ -157,17 +157,14 @@ npx ng lint
 - **Framework**: Angular 21, NgModules (non-standalone), SCSS
 - **Routing**: Lazy-loaded feature modules, one per page. `AuthGuard` protects post-auth routes; `GuestGuard` protects `/login`.
 - **Auth**: Firebase Auth via `firebase` npm package (`initializeApp` + `getAuth`). Google sign-in only. `AuthService` exposes `status$` observable (`AppAuthStatus`: `loading | unauthenticated | onboarding | pending | active`). `App` component subscribes and navigates accordingly.
-- **API**: `axios` (not Angular `HttpClient`). `ApiService` creates the axios instance with a Bearer token request interceptor that fetches the current Firebase ID token on every call. Base URL is read from `BackendPreferenceService`.
-- **Backend selector**: `BackendPreferenceService` reads/writes `localStorage` key `nexuscore_backend_choice`. Two values: `JS` → NestJS, `DOTNET` → ASP.NET Core. Switching backend reloads the axios instance.
+- **API**: `axios` (not Angular `HttpClient`). `ApiService` creates the axios instance with a Bearer token request interceptor that fetches the current Firebase ID token on every call. Base URL is provided by `BackendPreferenceService` (hardcoded to the .NET API).
+- **Backend**: Always NexusCoreDotNet. `BackendPreferenceService` returns the hardcoded .NET base URL — no toggle, no `localStorage`.
 - **State**: No NgRx/Akita. Each page component manages its own local state.
 - **Charts**: Custom CSS bar chart in the Reports page (no Chart.js dependency at runtime — `ng2-charts`/`chart.js` are installed but the custom CSS approach is used).
 
-## API Backends
+## API Backend
 
-| Key      | Base URL                                                   | Label                      |
-| -------- | ---------------------------------------------------------- | -------------------------- |
-| `JS`     | `https://nexus-coreapi-production.up.railway.app/api/v1`   | NexusCoreJS (Node API)     |
-| `DOTNET` | `https://nexuscoredotnet-production.up.railway.app/api/v1` | NexusCoreDotNet (.NET API) |
+`https://nexuscoredotnet-production.up.railway.app/api/v1` (NexusCoreDotNet, .NET API)
 
 ## Angular-Specific Decisions
 
@@ -201,7 +198,6 @@ The app is deployed as a static site on Railway. Railpack detects Angular automa
 ## Common Pitfalls
 
 - **Environment files are gitignored** — recreate them from the Firebase Console before running or building locally. The build will fail without them. On Railway, the `prebuild` script generates them automatically from the `FIREBASE_*` variables.
-- **Switching backend** updates `localStorage` and reinitialises the axios instance. The change takes effect immediately (no app restart needed, unlike the Android app).
 - **Google Sign-In**: Firebase's `signInWithPopup(provider)` is used. In development, `localhost:4200` must be in the Firebase Console → Authentication → Authorised domains.
 - **`AppAuthStatus` flow**: `loading` → (Firebase resolves) → `unauthenticated` | `onboarding` | `pending` | `active`. `App.ngOnInit` subscribes and navigates. Guards provide a secondary layer of protection.
 - **Lazy-loaded modules**: Each page module must re-export `SharedModule` or import it directly if it uses `AppHeaderComponent` or `StatusChipComponent`.
