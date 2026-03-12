@@ -14,7 +14,6 @@ import { AuthService } from '../../services/auth.service';
 export class OnboardingComponent {
   displayName = '';
   organizationName = '';
-  organizationSlug = '';
   loading = false;
   error = '';
 
@@ -25,13 +24,6 @@ export class OnboardingComponent {
   ) {
     const fbUser = this.authService.firebaseUser$.value;
     if (fbUser?.displayName) this.displayName = fbUser.displayName;
-  }
-
-  onOrgNameChange(): void {
-    this.organizationSlug = this.organizationName
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
   }
 
   async submit(): Promise<void> {
@@ -45,7 +37,6 @@ export class OnboardingComponent {
       await this.apiService.register({
         displayName: this.displayName.trim(),
         organizationName: this.organizationName.trim(),
-        organizationSlug: this.organizationSlug.trim() || this.organizationName.trim().toLowerCase().replace(/\s+/g, '-'),
       });
       await this.authService.loadAppUser();
       this.router.navigate(['/dashboard']);

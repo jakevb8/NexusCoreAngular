@@ -1,4 +1,4 @@
-<app-header title="Assets">
+<app-header title="Assets" [showBack]="true" (onBack)="goBack()">
   <div class="header-actions" *ngIf="isManager">
     <label class="btn-secondary btn-sm" title="Import CSV">
       Import CSV

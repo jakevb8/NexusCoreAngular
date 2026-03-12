@@ -55,10 +55,14 @@ export class ApiService {
 
   async register(payload: {
     organizationName: string;
-    organizationSlug: string;
-    displayName?: string;
+    displayName: string;
   }): Promise<void> {
-    await this.getClient().post('/auth/register', payload);
+    const firebaseToken = await this._auth!.currentUser!.getIdToken(false);
+    await this.getClient().post('/auth/register', {
+      firebaseToken,
+      orgName: payload.organizationName,
+      name: payload.displayName,
+    });
   }
 
   async deleteAccount(): Promise<void> {
@@ -88,7 +92,7 @@ export class ApiService {
   }
 
   async importCsv(formData: FormData): Promise<CsvImportResult> {
-    const res = await this.getClient().post<CsvImportResult>('/assets/import/csv', formData, {
+    const res = await this.getClient().post<CsvImportResult>('/assets/import', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return res.data;

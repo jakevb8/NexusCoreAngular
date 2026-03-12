@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import {
@@ -47,11 +47,13 @@ export class AssetsComponent implements OnInit {
     return role === Role.SUPERADMIN || role === Role.ORG_MANAGER || role === Role.ASSET_MANAGER;
   }
 
-  constructor(private apiService: ApiService, private authService: AuthService, private cdr: ChangeDetectorRef) {}
+  constructor(private apiService: ApiService, private authService: AuthService, private location: Location, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.load();
   }
+
+  goBack(): void { this.location.back(); }
 
   async load(): Promise<void> {
     this.loading = true;

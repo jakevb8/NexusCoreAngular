@@ -22,21 +22,9 @@
       <input
         type="text"
         [(ngModel)]="organizationName"
-        (input)="onOrgNameChange()"
         placeholder="Acme Corp"
         [disabled]="loading"
       />
-    </div>
-
-    <div class="form-group">
-      <label>Organization slug</label>
-      <input
-        type="text"
-        [(ngModel)]="organizationSlug"
-        placeholder="acme-corp"
-        [disabled]="loading"
-      />
-      <span class="hint">Used in URLs — lowercase, hyphens only</span>
     </div>
 
     <button class="btn-primary" (click)="submit()" [disabled]="loading">
