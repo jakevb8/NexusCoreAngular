@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { ReportsData, AssetStatus } from '../../models';
@@ -25,7 +25,7 @@ export class ReportsComponent implements OnInit {
     [AssetStatus.RETIRED]:     '#6b7280',
   };
 
-  constructor(private apiService: ApiService, private location: Location) {}
+  constructor(private apiService: ApiService, private location: Location, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void { this.load(); }
 
@@ -43,6 +43,7 @@ export class ReportsComponent implements OnInit {
       this.error = err?.response?.data?.message ?? 'Failed to load reports.';
     } finally {
       this.loading = false;
+      this.cdr.markForCheck();
     }
   }
 

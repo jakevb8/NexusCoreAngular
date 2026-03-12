@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { KafkaEvent, PaginatedEvents, resolvedTotal } from '../../models';
@@ -18,7 +18,7 @@ export class EventsComponent implements OnInit {
   perPage = 20;
   total = 0;
 
-  constructor(private apiService: ApiService, private location: Location) {}
+  constructor(private apiService: ApiService, private location: Location, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void { this.load(); }
 
@@ -38,6 +38,7 @@ export class EventsComponent implements OnInit {
       this.error = err?.response?.data?.message ?? 'Failed to load events.';
     } finally {
       this.loading = false;
+      this.cdr.markForCheck();
     }
   }
 

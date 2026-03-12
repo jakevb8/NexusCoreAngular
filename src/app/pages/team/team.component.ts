@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -34,7 +34,7 @@ export class TeamComponent implements OnInit {
     return this.authService.appUser$.value?.id ?? '';
   }
 
-  constructor(private apiService: ApiService, private authService: AuthService, private location: Location) {}
+  constructor(private apiService: ApiService, private authService: AuthService, private location: Location, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void { this.load(); }
 
@@ -49,6 +49,7 @@ export class TeamComponent implements OnInit {
       this.error = err?.response?.data?.message ?? 'Failed to load team.';
     } finally {
       this.loading = false;
+      this.cdr.markForCheck();
     }
   }
 

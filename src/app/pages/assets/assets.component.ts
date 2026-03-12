@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -47,7 +47,7 @@ export class AssetsComponent implements OnInit {
     return role === Role.SUPERADMIN || role === Role.ORG_MANAGER || role === Role.ASSET_MANAGER;
   }
 
-  constructor(private apiService: ApiService, private authService: AuthService) {}
+  constructor(private apiService: ApiService, private authService: AuthService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.load();
@@ -68,6 +68,7 @@ export class AssetsComponent implements OnInit {
       this.error = err?.response?.data?.message ?? 'Failed to load assets.';
     } finally {
       this.loading = false;
+      this.cdr.markForCheck();
     }
   }
 
