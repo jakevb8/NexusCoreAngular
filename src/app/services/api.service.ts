@@ -57,11 +57,13 @@ export class ApiService {
     organizationName: string;
     displayName: string;
   }): Promise<void> {
-    const firebaseToken = await this._auth!.currentUser!.getIdToken(false);
+    const currentUser = this._auth!.currentUser!;
+    const firebaseToken = await currentUser.getIdToken(false);
     await this.getClient().post('/auth/register', {
       firebaseToken,
       orgName: payload.organizationName,
       name: payload.displayName,
+      email: currentUser.email ?? '',
     });
   }
 
