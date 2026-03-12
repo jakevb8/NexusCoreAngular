@@ -46,3 +46,4 @@ Thumbs.db
 # Firebase / secrets — NEVER COMMIT
 src/environments/environment.ts
 src/environments/environment.prod.ts
+railway-setup.txt

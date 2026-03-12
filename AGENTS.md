@@ -177,9 +177,30 @@ npx ng lint
 - **`HttpClient` is NOT used** — `axios` handles all HTTP. Do not add `HttpClientModule`.
 - **Environment file replacement**: `angular.json` has `fileReplacements` configured for production. The `environment.ts` file is always imported; `environment.prod.ts` is swapped in by the build for `ng build`.
 
+## Railway Deployment
+
+The app is deployed as a static site on Railway. Railpack detects Angular automatically and serves the output with Caddy.
+
+**Required Railway service variables:**
+
+| Variable | Value |
+| -------- | ----- |
+| `RAILPACK_SPA_OUTPUT_DIR` | `dist/nexuscore-angular/browser` |
+| `FIREBASE_API_KEY` | from Firebase Console |
+| `FIREBASE_AUTH_DOMAIN` | `nexus-core-rms.firebaseapp.com` |
+| `FIREBASE_PROJECT_ID` | `nexus-core-rms` |
+| `FIREBASE_STORAGE_BUCKET` | `nexus-core-rms.firebasestorage.app` |
+| `FIREBASE_MESSAGING_SENDER_ID` | from Firebase Console |
+| `FIREBASE_APP_ID` | from Firebase Console |
+
+- `RAILPACK_SPA_OUTPUT_DIR` is a **Railpack** variable — it tells Caddy where the built static files are. Angular 21 outputs to `dist/nexuscore-angular/browser/`; Railpack defaults to `/app/browser` and will fail without this.
+- The `FIREBASE_*` variables are **build-time only** — `scripts/generate-env.js` (run via the `prebuild` npm hook) reads them and writes `environment.ts` and `environment.prod.ts` before `ng build` runs. They are baked into the JS bundle and not read at runtime.
+- After deploying, add the Railway domain to **Firebase Console → Authentication → Authorised domains** or `signInWithPopup` will be blocked.
+- The full variable list with real values is in `railway-setup.txt` (gitignored — do not commit it).
+
 ## Common Pitfalls
 
-- **Environment files are gitignored** — recreate them from the Firebase Console before running or building. The build will fail without them.
+- **Environment files are gitignored** — recreate them from the Firebase Console before running or building locally. The build will fail without them. On Railway, the `prebuild` script generates them automatically from the `FIREBASE_*` variables.
 - **Switching backend** updates `localStorage` and reinitialises the axios instance. The change takes effect immediately (no app restart needed, unlike the Android app).
 - **Google Sign-In**: Firebase's `signInWithPopup(provider)` is used. In development, `localhost:4200` must be in the Firebase Console → Authentication → Authorised domains.
 - **`AppAuthStatus` flow**: `loading` → (Firebase resolves) → `unauthenticated` | `onboarding` | `pending` | `active`. `App.ngOnInit` subscribes and navigates. Guards provide a secondary layer of protection.
