@@ -16,12 +16,11 @@ Angular 21 web client for the [NexusCore](https://github.com/jakevb8/NexusCore) 
 | Login      | Google sign-in (Firebase)                                                                      |
 | Onboarding | Display name + org name form, POST /auth/register                                              |
 | Pending    | Pending approval message, sign out                                                             |
-| Dashboard  | Navigation cards to Assets, Team, Reports, Events, Settings                                    |
+| Dashboard  | Navigation cards to Assets, Team, Reports, Settings                                            |
 | Assets     | List with search + pagination, create/edit/delete modal (manager only), CSV import, sample CSV |
 | Team       | Member list, invite by email modal, copy-link fallback, remove member, change role dropdown    |
 | Reports    | Total assets, utilization %, assets-by-status custom CSS bar chart                            |
-| Events     | Paginated Kafka asset status change history (asset name, old/new status, timestamp)            |
-| Settings   | Account info, sign out                                                                         |
+| Settings   | Account info, sign out, delete account                                                         |
 
 ## API Backend
 

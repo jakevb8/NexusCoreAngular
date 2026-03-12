@@ -48,6 +48,6 @@ export class ReportsComponent implements OnInit {
   }
 
   get utilizationPercent(): number {
-    return Math.round((this.data?.utilizationRate ?? 0) * 100);
+    return Math.round(this.data?.utilizationRate ?? 0);
   }
 }

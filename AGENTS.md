@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-NexusCoreAngular is the Angular 21 web client for the NexusCore multi-tenant Resource Management SaaS. It is a **frontend-only** app — it has no backend of its own. It connects to either of the two existing backends via a user-selectable toggle persisted in `localStorage`.
+NexusCoreAngular is the Angular 21 web client for the NexusCore multi-tenant Resource Management SaaS. It is a **frontend-only** app — it has no backend of its own. It connects to the NexusCoreDotNet (.NET) backend (hardcoded — no toggle).
 
 **Backend repos:**
 
@@ -81,12 +81,11 @@ NexusCoreAngular mirrors the **frontend/UI feature set** of all other NexusCore 
 | Login      | Google sign-in (Firebase)                                                                      |
 | Onboarding | Display name + org name form, POST /auth/register                                              |
 | Pending    | Pending approval message, sign out                                                             |
-| Dashboard  | Navigation cards to Assets, Team, Reports, Events, Settings                                    |
+| Dashboard  | Navigation cards to Assets, Team, Reports, Settings                                            |
 | Assets     | List with search + pagination, create/edit/delete modal (manager only), CSV import, sample CSV |
 | Team       | Member list, invite by email modal, copy-link fallback, remove member, change role dropdown    |
 | Reports    | Total assets, utilization %, assets-by-status custom CSS bar chart                            |
-| Events     | Paginated Kafka asset status change history (asset name, old/new status, timestamp)            |
-| Settings   | Account info, sign out                                                                         |
+| Settings   | Account info, sign out, delete account                                                         |
 
 ## Project Structure
 

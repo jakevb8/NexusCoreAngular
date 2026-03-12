@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
     { title: 'Assets', description: 'Manage your organization\'s assets', icon: '&#128230;', route: '/assets' },
     { title: 'Team', description: 'Manage team members and roles', icon: '&#128101;', route: '/team' },
     { title: 'Reports', description: 'View utilization analytics', icon: '&#128202;', route: '/reports' },
-    { title: 'Events', description: 'Asset status change history', icon: '&#128336;', route: '/events' },
     { title: 'Settings', description: 'Account and preferences', icon: '&#9881;', route: '/settings' },
   ];
 

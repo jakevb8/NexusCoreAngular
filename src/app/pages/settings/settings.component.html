@@ -20,4 +20,11 @@
   <div class="section">
     <button class="btn-danger" (click)="signOut()">Sign Out</button>
   </div>
+
+  <div class="section">
+    <h2>Danger Zone</h2>
+    <p class="section-desc">Permanently delete your account and all associated data.</p>
+    <div *ngIf="deleteError" class="alert-error">{{ deleteError }}</div>
+    <button class="btn-danger" (click)="deleteAccount()">Delete Account</button>
+  </div>
 </div>
