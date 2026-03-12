@@ -56,7 +56,11 @@ export class AuthService implements OnDestroy {
         this.status$.next('active');
       }
     } catch (err: any) {
-      if (err?.response?.status === 404) {
+      const status = err?.response?.status;
+      if (status === 404 || status === 401) {
+        // 404: user record exists in Firebase but not in DB (shouldn't happen normally)
+        // 401: new user — the .NET FirebaseJwtHandler rejects tokens for users not yet in the DB
+        // Both cases mean the user needs to go through onboarding
         this.status$.next('onboarding');
       } else {
         this.appUser$.next(null);
